@@ -3,7 +3,7 @@ artifacts_root: artifacts
 
 data_ingestion:
   root_dir: artifacts/data_ingestion
-  source_URL: https://www.dropbox.com/scl/fi/b35ehzrj4fya0vn6hpwo9/dataset.zip?rlkey=mwlcftlrpx81h067antb11bpn&st=yy31yp2f&dl=1
+  source_URL: https://www.dropbox.com/scl/fi/498x9ojbyigxeoed3jx2t/dataset.zip?rlkey=r7t2gcr5hkyst0fiz8q0rjaa9&st=vy8dgdr0&dl=1
   local_data_file: artifacts/data_ingestion/data.zip
   unzip_dir: artifacts/data_ingestion
 
@@ -18,3 +18,8 @@ prepare_callbacks:
   root_dir: artifacts/prepare_callbacks
   tensorboard_root_log_dir: artifacts/prepare_callbacks/tensorboard_log_dir
   checkpoint_model_filepath: artifacts/prepare_callbacks/checkpoint_dir/model.keras
+
+
+training:
+  root_dir: artifacts/training
+  trained_model_path: artifacts/training/model.keras

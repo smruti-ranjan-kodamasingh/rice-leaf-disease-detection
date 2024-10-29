@@ -27,8 +27,18 @@ class PrepareCallback:
         )
 
 
+    @property
+    def _create_early_stopping_callback(self):
+        return tf.keras.callbacks.EarlyStopping(
+            patience=10,
+            restore_best_weights=True
+        )
+    
+
+
     def get_tb_ckpt_callbacks(self):
         return [
             self._create_tb_callbacks,
-            self._create_ckpt_callbacks
+            self._create_ckpt_callbacks,
+            self._create_early_stopping_callback
         ]
