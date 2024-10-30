@@ -15,39 +15,29 @@ class PrepareBaseModel:
             include_top=self.config.params_include_top
         )
 
+        self.model.trainable = False
+
         self.save_model(path=self.config.base_model_path, model=self.model)
 
     
     
     @staticmethod
-    def _prepare_full_model(model, classes, freeze_all, freeze_till, learning_rate):
-        if freeze_all:
-            for layer in model.layers:
-                model.trainable = False
-        elif (freeze_till is not None) and (freeze_till > 0):
-            for layer in model.layers[:-freeze_till]:
-                model.trainable = False
+    def _prepare_full_model(model, classes, learning_rate):
 
-        x = tf.keras.layers.Flatten()(model.output)
-        x = tf.keras.layers.BatchNormalization()(x)
-        x = tf.keras.layers.Dropout(0.35)(x)
-        x = tf.keras.layers.Dense(220, activation="relu")(x)
-        prediction = tf.keras.layers.Dense(
-            classes,
-            activation="softmax"
-        )(x)
+        full_model = tf.keras.models.Sequential()
+        full_model.add(model)
 
-        full_model = tf.keras.models.Model(
-            inputs=model.input,
-            outputs=prediction
-        )
+        full_model.add(tf.keras.layers.BatchNormalization())
+        full_model.add(tf.keras.layers.Dropout(0.35))
+        full_model.add(tf.keras.layers.Dense(220, activation="relu"))
+        full_model.add(tf.keras.layers.Dense(classes, activation="softmax"))
 
         full_model.compile(
             optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
             loss="sparse_categorical_crossentropy",
             metrics=["accuracy"]
         )
-
+        
         full_model.summary()
         return full_model
 
@@ -57,8 +47,6 @@ class PrepareBaseModel:
         self.full_model = self._prepare_full_model(
             model=self.model,
             classes=self.config.params_classes,
-            freeze_all=True,
-            freeze_till=None,
             learning_rate=self.config.params_learning_rate
         )
 
