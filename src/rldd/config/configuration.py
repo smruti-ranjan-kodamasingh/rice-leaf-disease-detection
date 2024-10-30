@@ -98,8 +98,8 @@ class ConfigurationManager:
 
     def get_validation_config(self) -> EvaluationConfig:
         eval_config = EvaluationConfig(
-            path_of_model=self.config.training.trained_model_path,
-            training_data=self.config.data_ingestion.unzip_dir,
+            path_of_model="artifacts/training/model.keras",
+            training_data="artifacts/data_ingestion/dataset",
             params_image_size=self.params.IMAGE_SIZE,
             params_batch_size=self.params.BATCH_SIZE
         )
